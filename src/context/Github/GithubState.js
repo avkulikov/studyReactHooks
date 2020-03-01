@@ -17,18 +17,36 @@ export const GithubState = ({children}) => {
         repos: []
     }
     const [state, dispatch] = useReducer(githubReducer, initialState)
-    const hide = () => dispatch({type: ALERT_HIDE})
-    const show = (text, type = 'secondary') => {
-        dispatch({
-            type: ALERT_SHOW,
-            payload: {type, text}
-        })
+    const search = async valueSearch => {
+        setLoading()
+        // ...
+
+        dispatch({type: GITHUB_SEARCH_USERS, payload: []})
     }
+    const getUser = async nickName => {
+        setLoading()
+        // ...
+
+        dispatch({type: GITHUB_GET_USER, payload: {}})
+    }
+    const getRepos = async repoName => {
+        setLoading()
+        // ...
+
+        dispatch({type: GITHUB_GET_REPOS, payload: []})
+    }
+    const clearUsers = () => dispatch({type: GITHUB_CLEAR_USERS})
+    const setLoading = () => dispatch({type: GITHUB_SET_LOADING})
 
     return (
-        <GithubContext.Provider
-            value={{hide, show, alert: state}}
-        >
+        <GithubContext.Provider value={{
+            search,
+            getUser,
+            getRepos,
+            clearUsers,
+            setLoading,
+            github: state
+        }}>
             {children}
         </GithubContext.Provider>
     )
