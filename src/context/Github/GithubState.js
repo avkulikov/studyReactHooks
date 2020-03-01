@@ -1,4 +1,6 @@
-import React, {useReducer} from 'react'
+import React, {useReducer, useContext} from 'react'
+import axios from '../../utils/axios/github.axios'
+import {AlertContext} from '../Alert/alertContext'
 import {GithubContext} from './githubContext'
 import {githubReducer} from './githubReducer'
 import {
@@ -9,6 +11,12 @@ import {
     GITHUB_SET_LOADING
 } from '../types'
 
+// console.log('process.env', process.env)
+const
+    CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID,
+    CLIENT_SECRET = process.env.REACT_APP_GITHUB_CLIENT_SECRET,
+    withCreditenals = url => `${url}client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`
+
 export const GithubState = ({children}) => {
     const initialState = {
         user: {},
@@ -17,21 +25,41 @@ export const GithubState = ({children}) => {
         repos: []
     }
     const [state, dispatch] = useReducer(githubReducer, initialState)
-    const search = async valueSearch => {
-        setLoading()
-        // ...
+    const {show} = useContext(AlertContext)
 
-        dispatch({type: GITHUB_SEARCH_USERS, payload: []})
-    }
-    const getUser = async nickName => {
-        setLoading()
-        // ...
+    const search = async (where = 'users', query = 'avkulikov') => {
+        try {
+            setLoading()
+            const response = await axios.get(withCreditenals(`search/${where}?q=${query}&`))
 
-        dispatch({type: GITHUB_GET_USER, payload: {}})
+            dispatch({type: GITHUB_SEARCH_USERS, payload: response.data.items})
+        } catch (error) {
+            show(`[Ошибка!]: ${error.message}`, 'danger')
+        }
     }
-    const getRepos = async repoName => {
+
+    const getUser = async login => {
         setLoading()
-        // ...
+        try {
+            setLoading()
+            const response = await axios.get(withCreditenals(`users/${login}?`))
+
+            dispatch({type: GITHUB_GET_USER, payload: response.data})
+        } catch (error) {
+            show(`[Ошибка!]: ${error.message}`, 'danger')
+        }
+    }
+
+    const getRepos = async nameUser => {
+        setLoading()
+        try {
+            setLoading()
+            const response = await axios.get(withCreditenals(`users/${nameUser}/repos?per_page=5&`))
+
+            dispatch({type: GITHUB_GET_REPOS, payload: response.data})
+        } catch (error) {
+            show(`[Ошибка!]: ${error.message}`, 'danger')
+        }
 
         dispatch({type: GITHUB_GET_REPOS, payload: []})
     }

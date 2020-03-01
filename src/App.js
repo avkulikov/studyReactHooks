@@ -10,8 +10,8 @@ import {GithubState} from './context/Github/GithubState';
 
 function App() {
   return (
-    <GithubState>
-      <AlertState>
+    <AlertState>
+      <GithubState>
         <BrowserRouter>
           <Navbar />
           <div className="container pt-4">
@@ -23,8 +23,8 @@ function App() {
             </Switch>
           </div>
         </BrowserRouter>
-      </AlertState>
-    </GithubState>
+      </GithubState>
+    </AlertState>
   );
 }
 
