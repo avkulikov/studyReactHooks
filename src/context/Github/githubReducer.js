@@ -15,10 +15,14 @@ const handlers = {
         ...state,
         repos: action.payload, loading: false
     }),
-    [GITHUB_GET_USER]: (state, action) => ({
-        ...state,
-        user: action.payload, loading: false
-    }),
+    [GITHUB_GET_USER]: (state, action) => {
+        console.log('action', action)
+        console.log('state', state)
+        return {
+            ...state,
+            user: action.payload, loading: false
+        }
+    },
     [GITHUB_SEARCH_USERS]: (state, action) => ({
         ...state,
         users: action.payload, loading: false

@@ -39,7 +39,6 @@ export const GithubState = ({children}) => {
     }
 
     const getUser = async login => {
-        setLoading()
         try {
             setLoading()
             const response = await axios.get(withCreditenals(`users/${login}?`))
@@ -51,7 +50,6 @@ export const GithubState = ({children}) => {
     }
 
     const getRepos = async nameUser => {
-        setLoading()
         try {
             setLoading()
             const response = await axios.get(withCreditenals(`users/${nameUser}/repos?per_page=5&`))
@@ -60,8 +58,6 @@ export const GithubState = ({children}) => {
         } catch (error) {
             show(`[Ошибка!]: ${error.message}`, 'danger')
         }
-
-        dispatch({type: GITHUB_GET_REPOS, payload: []})
     }
     const clearUsers = () => dispatch({type: GITHUB_CLEAR_USERS})
     const setLoading = () => dispatch({type: GITHUB_SET_LOADING})

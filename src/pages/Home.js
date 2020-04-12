@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import {Search} from '../component/Search'
-import {Card} from '../component/Card'
+import {UserCard} from '../component/UsersCard'
 import {GithubContext} from '../context/Github/githubContext'
 
 export const Home = () => {
@@ -15,7 +15,7 @@ export const Home = () => {
                     </div>
                     : users.map(user => (
                         <div className="col-sm-4 mb-4" key={user.id}>
-                            <Card user={user} />
+                            <UserCard user={user} />
                         </div>
                     ))
                 }
